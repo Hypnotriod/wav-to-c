@@ -59,7 +59,12 @@ WavFileReader::Status WavFileReader::read(size_t samplesNum, float * buffer, siz
     }
 
     if (status != READ_ERROR) {
-        if (header.bitsPerSample == 16) {
+        if (header.bitsPerSample == 8) {
+            for (size_t i = 0; i < *samplesRead; i++) {
+                sample = ioBuffer[i] - 128;
+                buffer[i] = (float) sample / (float) INT8_MAX;
+            }
+        } else if (header.bitsPerSample == 16) {
             for (size_t i = 0; i < *samplesRead; i++) {
                 sample = read16(ioBuffer, i * 2);
                 if (sample & 0x8000)

@@ -52,11 +52,11 @@ WavToCFileWriter::Status WavToCFileWriter::writePortion(float * data, size_t sam
     switch (bytesPerSample) {
         case 1:
             while (samplesNum--)
-                file << (int8_t) (*data++ * INT8_MAX) << ", ";
+                file << (int32_t) (*data++ * INT8_MAX) << ", ";
             break;
         case 2:
             while (samplesNum--)
-                file << (int16_t) (*data++ * INT16_MAX) << ", ";
+                file << (int32_t) (*data++ * INT16_MAX) << ", ";
             break;
         case 3:
             while (samplesNum--)
