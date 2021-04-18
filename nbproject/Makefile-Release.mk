@@ -36,6 +36,7 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 # Object Files
 OBJECTFILES= \
 	${OBJECTDIR}/main.o \
+	${OBJECTDIR}/src/WavFileReader.o \
 	${OBJECTDIR}/src/WavToCFileWriter.o
 
 
@@ -61,17 +62,22 @@ LDLIBSOPTIONS=
 
 ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/wav-to-c.exe: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
-	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/wav-to-c ${OBJECTFILES} ${LDLIBSOPTIONS}
+	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/wav-to-c ${OBJECTFILES} ${LDLIBSOPTIONS} -lstdc++fs
 
 ${OBJECTDIR}/main.o: main.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -Iinclude -Isrc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/main.o main.cpp
+	$(COMPILE.cc) -O2 -Iinclude -Isrc -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/main.o main.cpp
+
+${OBJECTDIR}/src/WavFileReader.o: src/WavFileReader.cpp
+	${MKDIR} -p ${OBJECTDIR}/src
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -Iinclude -Isrc -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/WavFileReader.o src/WavFileReader.cpp
 
 ${OBJECTDIR}/src/WavToCFileWriter.o: src/WavToCFileWriter.cpp
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -Iinclude -Isrc -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/WavToCFileWriter.o src/WavToCFileWriter.cpp
+	$(COMPILE.cc) -O2 -Iinclude -Isrc -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/WavToCFileWriter.o src/WavToCFileWriter.cpp
 
 # Subprojects
 .build-subprojects:

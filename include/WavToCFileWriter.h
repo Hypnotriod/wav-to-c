@@ -22,16 +22,16 @@ public:
     };
 
     Status open(const char * path);
-    Status writeHeader(WavFileHeader * header);
+    Status writeHeader(WavFileHeader * header, size_t samplesNumMax);
     Status writePortion(float * data, size_t samplesNum);
     Status writeEOF();
     void close();
 
 private:
     size_t bytesPerSample = 0;
+    size_t totalSamplesNum = 0;
     std::string path;
     std::ofstream file;
-private:
 
 };
 

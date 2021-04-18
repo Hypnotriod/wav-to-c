@@ -36,6 +36,7 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 # Object Files
 OBJECTFILES= \
 	${OBJECTDIR}/main.o \
+	${OBJECTDIR}/src/WavFileReader.o \
 	${OBJECTDIR}/src/WavToCFileWriter.o
 
 
@@ -67,6 +68,11 @@ ${OBJECTDIR}/main.o: main.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -Iinclude -Isrc -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/main.o main.cpp
+
+${OBJECTDIR}/src/WavFileReader.o: src/WavFileReader.cpp
+	${MKDIR} -p ${OBJECTDIR}/src
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -Iinclude -Isrc -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/WavFileReader.o src/WavFileReader.cpp
 
 ${OBJECTDIR}/src/WavToCFileWriter.o: src/WavToCFileWriter.cpp
 	${MKDIR} -p ${OBJECTDIR}/src

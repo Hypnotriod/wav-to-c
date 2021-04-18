@@ -51,9 +51,15 @@
           <commandLine>-lstdc++fs</commandLine>
         </linkerTool>
       </compileType>
+      <item path="include/WavFileHeader.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="include/WavFileReader.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="include/WavToCFileWriter.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/WavFileReader.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/WavToCFileWriter.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -70,6 +76,7 @@
         </cTool>
         <ccTool>
           <developmentMode>5</developmentMode>
+          <standard>8</standard>
           <incDir>
             <pElem>include</pElem>
             <pElem>src</pElem>
@@ -81,10 +88,19 @@
         <asmTool>
           <developmentMode>5</developmentMode>
         </asmTool>
+        <linkerTool>
+          <commandLine>-lstdc++fs</commandLine>
+        </linkerTool>
       </compileType>
+      <item path="include/WavFileHeader.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="include/WavFileReader.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="include/WavToCFileWriter.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/WavFileReader.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/WavToCFileWriter.cpp" ex="false" tool="1" flavor2="0">
       </item>
