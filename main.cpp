@@ -48,7 +48,7 @@ int process(const char * input, const char * output, size_t samplesNumMax) {
         cout << "Can't create file " << output << endl;
         return -1;
     }
-    writer.writeHeader(reader.getHeader(), samplesNumMax);
+    writer.writeHeader(reader.getHeader(), input, samplesNumMax);
     generate(&reader, &writer, samplesNumMax);
     writer.writeEOF();
 

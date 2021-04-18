@@ -21,16 +21,15 @@ WavToCFileWriter::Status WavToCFileWriter::open(const char * path) {
     file.open(path);
     if (!file.is_open())
         return OPEN_ERROR;
-    this->path = path;
     return OK;
 }
 
-WavToCFileWriter::Status WavToCFileWriter::writeHeader(WavFileHeader * header, size_t samplesNumMax) {
+WavToCFileWriter::Status WavToCFileWriter::writeHeader(WavFileHeader * header, const char * fileName, size_t samplesNumMax) {
     bytesPerSample = header->bitsPerSample / 8;
     totalSamplesNum = header->subchunk2Size / bytesPerSample;
 
     file << "/*********************" << std::endl;
-    file << " * " << std::experimental::filesystem::path(this->path).filename() << std::endl;
+    file << " * " << std::experimental::filesystem::path(fileName).filename() << std::endl;
     file << " * sampleRate: " << header->sampleRate << std::endl;
     file << " * numChannels: " << header->numChannels << std::endl;
     file << " * bytesPerSample: " << bytesPerSample << std::endl;

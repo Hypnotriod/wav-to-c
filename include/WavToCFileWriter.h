@@ -22,7 +22,7 @@ public:
     };
 
     Status open(const char * path);
-    Status writeHeader(WavFileHeader * header, size_t samplesNumMax);
+    Status writeHeader(WavFileHeader * header, const char * fileName, size_t samplesNumMax);
     Status writePortion(float * data, size_t samplesNum);
     Status writeEOF();
     void close();
