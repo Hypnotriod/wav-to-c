@@ -112,10 +112,14 @@ WavFileReader::Status WavFileReader::parseHeader() {
             ? OK : PARSE_ERROR;
 }
 
+size_t WavFileReader::getSamplesTotal() {
+    return header.subchunk2Size / (header.bitsPerSample / 8);
+}
+
 size_t WavFileReader::getSamplesRead() {
-    return (ftell(file) - WAV_FILE_HEADER_SIZE) / sizeof (int16_t);
+    return (ftell(file) - WAV_FILE_HEADER_SIZE) / (header.bitsPerSample / 8);
 }
 
 size_t WavFileReader::getSamplesLeft() {
-    return header.subchunk2Size / (header.bitsPerSample / 8) - getSamplesRead();
+    return getSamplesTotal() - getSamplesRead();
 }

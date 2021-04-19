@@ -29,6 +29,7 @@ public:
     Status open(const char * path);
     void close();
     Status read(size_t samplesNum, float * buff, size_t * samplesRead);
+    size_t getSamplesTotal();
     size_t getSamplesRead();
     size_t getSamplesLeft();
     WavFileHeader * getHeader();
