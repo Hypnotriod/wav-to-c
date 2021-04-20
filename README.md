@@ -1,5 +1,6 @@
 # wav-to-c
-Simple utility to convert wav files to c byte-array
+Simple utility to convert wav files to c byte-array  
+Supported 8, 16, 24 or 32 bit PCM or 32 bit IEEE FLOAT audio format
 
 ## Usage
 ```console
