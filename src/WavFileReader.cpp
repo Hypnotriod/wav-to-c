@@ -24,10 +24,6 @@ WavFileReader::~WavFileReader() {
     close();
 }
 
-WavFileHeader * WavFileReader::getHeader() {
-    return &header;
-}
-
 WavFileReader::Status WavFileReader::open(const char * path) {
     file = fopen(path, "rb");
     if (file == NULL)
@@ -121,9 +117,24 @@ WavFileReader::Status WavFileReader::parseHeader() {
     return memcmp(header.chunkId, "RIFF", 4) == 0 &&
             memcmp(header.format, "WAVE", 4) == 0 &&
             memcmp(header.subchunk1Id, "fmt ", 4) == 0 &&
-            memcmp(header.subchunk2Id, "data", 4) == 0 &&
-            (header.audioFormat == WAV_FILE_AUDIO_FORMAT_PCM || header.audioFormat == WAV_FILE_AUDIO_FORMAT_IEEE_FLOAT)
+            memcmp(header.subchunk2Id, "data", 4) == 0
             ? OK : PARSE_ERROR;
+}
+
+bool WavFileReader::isSupported() {
+    if (header.audioFormat == WAV_FILE_AUDIO_FORMAT_PCM &&
+            (header.bitsPerSample == 8 || header.bitsPerSample == 16 ||
+            header.bitsPerSample == 24 || header.bitsPerSample == 32))
+        return true;
+
+    if (header.audioFormat == WAV_FILE_AUDIO_FORMAT_IEEE_FLOAT && header.bitsPerSample == 32)
+        return true;
+
+    return false;
+}
+
+WavFileHeader * WavFileReader::getHeader() {
+    return &header;
 }
 
 size_t WavFileReader::getSamplesTotal() {

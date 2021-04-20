@@ -33,6 +33,7 @@ public:
     size_t getSamplesRead();
     size_t getSamplesLeft();
     WavFileHeader * getHeader();
+    bool isSupported();
 
 private:
     WavFileHeader header;

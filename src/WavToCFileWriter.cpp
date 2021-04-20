@@ -11,7 +11,6 @@
 #include "WavToCFileWriter.h"
 
 #define INT24_MAX 8388607
-#define FLOAT32_PRESISION 9
 
 WavToCFileWriter::WavToCFileWriter() {
 }
@@ -46,13 +45,16 @@ WavToCFileWriter::Status WavToCFileWriter::writeHeader(WavFileHeader * header, c
     file << " * samplesNum: " << (totalSamplesNum < samplesNumMax ? totalSamplesNum : samplesNumMax) << std::endl;
     file << "*********************/" << std::endl << std::endl;
 
-    switch (bytesPerSample) {
-        case 1: file << "const int8_t DATA[] = [" << std::endl;
-            break;
-        case 2: file << "const int16_t DATA[] = [" << std::endl;
-            break;
-        default: file << "const int32_t DATA[] = [" << std::endl;
-            break;
+    if (audioFormat == WAV_FILE_AUDIO_FORMAT_PCM) {
+        if (bytesPerSample == 1)
+            file << "const uint8_t DATA[] = [" << std::endl;
+        else if (bytesPerSample == 2)
+            file << "const int16_t DATA[] = [" << std::endl;
+        else if (bytesPerSample == 3 || bytesPerSample == 4)
+            file << "const int32_t DATA[] = [" << std::endl;
+    } else if (audioFormat == WAV_FILE_AUDIO_FORMAT_IEEE_FLOAT) {
+        if (bytesPerSample == 4)
+            file << "const float DATA[] = [" << std::endl;
     }
     return OK;
 }
@@ -75,7 +77,8 @@ WavToCFileWriter::Status WavToCFileWriter::writePortion(float * data, size_t sam
     } else if (audioFormat == WAV_FILE_AUDIO_FORMAT_IEEE_FLOAT) {
         if (bytesPerSample == 4)
             while (samplesNum--)
-                file << std::setprecision(FLOAT32_PRESISION) << *data++ << ", ";
+                file << std::fixed << std::setprecision(std::numeric_limits<float>::max_digits10)
+                << *data++ << "f, ";
     }
 
     file << std::endl;
