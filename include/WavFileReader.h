@@ -37,7 +37,7 @@ public:
 
 private:
     WavFileHeader header;
-    FILE * file;
+    FILE * file = NULL;
     size_t dataSize;
 
     Status parseHeader();

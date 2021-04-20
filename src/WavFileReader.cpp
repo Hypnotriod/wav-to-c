@@ -35,6 +35,7 @@ void WavFileReader::close() {
     if (file != NULL) {
         fclose(file);
         delete file;
+        file = NULL;
     }
 }
 
