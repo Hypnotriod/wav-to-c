@@ -30,6 +30,7 @@ void generate(WavFileReader * reader, WavToCFileWriter * writer, size_t samplesN
 
 int process(const char * input, const char * output, size_t samplesNumMax) {
     uint32_t bitsPerSample;
+    uint16_t audioFormat;
     WavFileReader reader;
     WavToCFileWriter writer;
 
@@ -39,8 +40,10 @@ int process(const char * input, const char * output, size_t samplesNumMax) {
     }
 
     bitsPerSample = reader.getHeader()->bitsPerSample;
-    if (bitsPerSample != 8 && bitsPerSample != 16 && bitsPerSample != 24) {
-        cout << "This tool only supports 8, 16 or 24 bits per sample." << endl;
+    audioFormat = reader.getHeader()->audioFormat;
+    if (bitsPerSample != 8 && bitsPerSample != 16 && bitsPerSample != 24 && bitsPerSample != 32 && audioFormat != WAV_FILE_AUDIO_FORMAT_PCM ||
+            bitsPerSample != 32 && audioFormat != WAV_FILE_AUDIO_FORMAT_IEEE_FLOAT) {
+        cout << "This tool only supports 8, 16, 24 or 32 bit per sample PCM or 32 bit IEEE_FLOAT." << endl;
         return -1;
     }
 

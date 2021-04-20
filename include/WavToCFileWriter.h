@@ -30,6 +30,7 @@ public:
 private:
     size_t bytesPerSample = 0;
     size_t totalSamplesNum = 0;
+    size_t audioFormat = 0;
     std::string path;
     std::ofstream file;
 

@@ -7,7 +7,9 @@
 #ifndef WAVFILEHEADER_H
 #define WAVFILEHEADER_H
 
-#define WAV_FILE_HEADER_SIZE 44
+#define WAV_FILE_HEADER_SIZE              44
+#define WAV_FILE_AUDIO_FORMAT_PCM         0x0001
+#define WAV_FILE_AUDIO_FORMAT_IEEE_FLOAT  0x0003
 
 struct WavFileHeader {
     char chunkId[4]; // "RIFF"
