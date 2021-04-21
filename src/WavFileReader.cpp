@@ -85,7 +85,8 @@ WavFileReader::Status WavFileReader::read(size_t samplesNum, float * buffer, siz
         } else if (header.audioFormat == WAV_FILE_AUDIO_FORMAT_IEEE_FLOAT) {
             if (header.bitsPerSample == 32) {
                 for (size_t i = 0; i < *samplesRead; i++) {
-                    buffer[i] = ((float *) ioBuffer)[i];
+                    sample = read32(ioBuffer, i * 4);
+                    buffer[i] = *((float *) &sample);
                 }
             }
         }
