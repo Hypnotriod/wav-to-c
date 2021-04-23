@@ -47,14 +47,14 @@ WavToCFileWriter::Status WavToCFileWriter::writeHeader(WavFileHeader * header, c
 
     if (audioFormat == WAV_FILE_AUDIO_FORMAT_PCM) {
         if (bytesPerSample == 1)
-            file << "const uint8_t DATA[] = [" << std::endl;
+            file << "const uint8_t DATA[] = {" << std::endl;
         else if (bytesPerSample == 2)
-            file << "const int16_t DATA[] = [" << std::endl;
+            file << "const int16_t DATA[] = {" << std::endl;
         else if (bytesPerSample == 3 || bytesPerSample == 4)
-            file << "const int32_t DATA[] = [" << std::endl;
+            file << "const int32_t DATA[] = {" << std::endl;
     } else if (audioFormat == WAV_FILE_AUDIO_FORMAT_IEEE_FLOAT) {
         if (bytesPerSample == 4)
-            file << "const float DATA[] = [" << std::endl;
+            file << "const float DATA[] = {" << std::endl;
     }
     return OK;
 }
@@ -87,7 +87,7 @@ WavToCFileWriter::Status WavToCFileWriter::writePortion(float * data, size_t sam
 }
 
 WavToCFileWriter::Status WavToCFileWriter::writeEOF() {
-    file << "];" << std::endl;
+    file << "};" << std::endl;
     return OK;
 }
 
