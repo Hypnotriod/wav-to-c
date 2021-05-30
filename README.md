@@ -6,4 +6,6 @@ Supported 8, 16, 24 or 32 bit PCM or 32 bit IEEE FLOAT audio format
 ```console
 ./wav-to-c <path_to_wav_file> <path_to_c_file>  
 ./wav-to-c <path_to_wav_file> <path_to_c_file> <max_samples_num>
+./wav-to-c -h <path_to_wav_file> <path_to_c_file> <max_samples_num>
+./wav-to-c -sh <path_to_wav_file> <path_to_c_file> <max_samples_num>
 ```
