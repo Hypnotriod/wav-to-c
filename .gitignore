@@ -1,7 +1,7 @@
 build/
 dist/
 nbproject/private/
-data/impulse.c
+data/*.c
 *.sfk
 .dep.inc
 *.stackdump

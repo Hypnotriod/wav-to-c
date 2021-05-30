@@ -12,6 +12,10 @@
 
 #define INT24_MAX 8388607
 
+#define swap16(_val) (((_val) & 0x00ff) << 8) | (((_val) & 0xff00) >> 8)
+#define swap32(_val) (((_val) & 0x000000ff) << 24) | (((_val) & 0x0000ff00) << 8) \
+                    | (((_val) & 0x00ff0000) >> 8)  | (((_val) & 0xff000000) >> 24)
+
 WavToCFileWriter::WavToCFileWriter() {
 }
 
@@ -25,7 +29,10 @@ WavToCFileWriter::Status WavToCFileWriter::open(const char * path) {
     return OK;
 }
 
-WavToCFileWriter::Status WavToCFileWriter::writeHeader(WavFileHeader * header, const char * fileName, size_t samplesNumMax) {
+WavToCFileWriter::Status WavToCFileWriter::writeHeader(
+        WavFileHeader * header,
+        const char * fileName,
+        size_t samplesNumMax) {
     bytesPerSample = header->bitsPerSample / 8;
     audioFormat = header->audioFormat;
     totalSamplesNum = header->subchunk2Size / bytesPerSample;
@@ -59,21 +66,55 @@ WavToCFileWriter::Status WavToCFileWriter::writeHeader(WavFileHeader * header, c
     return OK;
 }
 
-WavToCFileWriter::Status WavToCFileWriter::writePortion(float * data, size_t samplesNum) {
+WavToCFileWriter::Status WavToCFileWriter::writePortion(
+        float * data,
+        bool swapBytes,
+        bool hexadecimal,
+        size_t samplesNum) {
+    int32_t temp;
+
     file << "  ";
     if (audioFormat == WAV_FILE_AUDIO_FORMAT_PCM) {
-        if (bytesPerSample == 1)
-            while (samplesNum--)
-                file << (int32_t) (*data++ * INT8_MAX) << ", ";
-        else if (bytesPerSample == 2)
-            while (samplesNum--)
-                file << (int32_t) (*data++ * INT16_MAX) << ", ";
-        else if (bytesPerSample == 3)
-            while (samplesNum--)
-                file << (int32_t) (*data++ * INT24_MAX) << ", ";
-        else if (bytesPerSample == 4)
-            while (samplesNum--)
-                file << (int32_t) (*data++ * INT32_MAX) << ", ";
+        if (bytesPerSample == 1) {
+            while (samplesNum--) {
+                temp = (*data++ * INT8_MAX) + 128;
+                if (hexadecimal) {
+                    temp &= 0x000000ff;
+                    file << "0x" << std::setfill('0') << std::setw(2) << std::right << std::hex;
+                }
+                file << temp << ", ";
+            }
+        } else if (bytesPerSample == 2) {
+            while (samplesNum--) {
+                temp = *data++ * INT16_MAX;
+                if (swapBytes) temp = swap16(temp);
+                if (hexadecimal) {
+                    temp &= 0x0000ffff;
+                    file << "0x" << std::setfill('0') << std::setw(4) << std::right << std::hex;
+                }
+                file << temp << ", ";
+            }
+        } else if (bytesPerSample == 3) {
+            while (samplesNum--) {
+                temp = *data++ * INT24_MAX;
+                if (swapBytes) temp = swap32(temp);
+                if (hexadecimal) {
+                    temp &= 0x00ffffff;
+                    file << "0x" << std::setfill('0') << std::setw(6) << std::right << std::hex;
+                }
+                file << temp << ", ";
+            }
+        } else if (bytesPerSample == 4) {
+            while (samplesNum--) {
+                temp = *data++ * INT32_MAX;
+                if (swapBytes) temp = swap32(temp);
+                if (hexadecimal) {
+                    temp &= 0x00ffffff;
+                    file << "0x" << std::setfill('0') << std::setw(8) << std::right << std::hex;
+                }
+                file << temp << ", ";
+            }
+        }
     } else if (audioFormat == WAV_FILE_AUDIO_FORMAT_IEEE_FLOAT) {
         if (bytesPerSample == 4)
             while (samplesNum--)

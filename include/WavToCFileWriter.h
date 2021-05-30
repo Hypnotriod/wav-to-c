@@ -22,8 +22,15 @@ public:
     };
 
     Status open(const char * path);
-    Status writeHeader(WavFileHeader * header, const char * fileName, size_t samplesNumMax);
-    Status writePortion(float * data, size_t samplesNum);
+    Status writeHeader(
+            WavFileHeader * header,
+            const char * fileName,
+            size_t samplesNumMax);
+    Status writePortion(
+            float * data,
+            bool swapBytes,
+            bool hexadecimal,
+            size_t samplesNum);
     Status writeEOF();
     void close();
 
