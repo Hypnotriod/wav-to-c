@@ -81,7 +81,7 @@ int main(int argc, char** argv) {
         cout << "Usage 1: wav-to-c [<options>] <path_to_wav_file> <path_to_c_file>" << endl;
         cout << "Usage 2: wav-to-c [<options>] <path_to_wav_file> <path_to_c_file> <max_samples_num>" << endl;
         cout << "Options:" << endl;
-        cout << "    -s: swap bytes (8, 16, 24 or 32 bit PCM only)" << endl;
+        cout << "    -s: swap bytes (16, 24 or 32 bit PCM only)" << endl;
         cout << "    -h: hexadecimal format (8, 16, 24 or 32 bit PCM only)" << endl;
         return 0;
     }

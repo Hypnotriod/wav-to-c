@@ -87,31 +87,27 @@ WavToCFileWriter::Status WavToCFileWriter::writePortion(
         } else if (bytesPerSample == 2) {
             while (samplesNum--) {
                 temp = *data++ * INT16_MAX;
-                if (swapBytes) temp = swap16(temp);
                 if (hexadecimal) {
                     temp &= 0x0000ffff;
                     file << "0x" << std::setfill('0') << std::setw(4) << std::right << std::hex;
                 }
+                if (swapBytes) temp = swap16(temp);
                 file << temp << ", ";
             }
         } else if (bytesPerSample == 3) {
             while (samplesNum--) {
                 temp = *data++ * INT24_MAX;
+                if (hexadecimal)
+                    file << "0x" << std::setfill('0') << std::setw(8) << std::right << std::hex;
                 if (swapBytes) temp = swap32(temp);
-                if (hexadecimal) {
-                    temp &= 0x00ffffff;
-                    file << "0x" << std::setfill('0') << std::setw(6) << std::right << std::hex;
-                }
                 file << temp << ", ";
             }
         } else if (bytesPerSample == 4) {
             while (samplesNum--) {
                 temp = *data++ * INT32_MAX;
-                if (swapBytes) temp = swap32(temp);
-                if (hexadecimal) {
-                    temp &= 0x00ffffff;
+                if (hexadecimal)
                     file << "0x" << std::setfill('0') << std::setw(8) << std::right << std::hex;
-                }
+                if (swapBytes) temp = swap32(temp);
                 file << temp << ", ";
             }
         }
