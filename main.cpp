@@ -23,7 +23,7 @@ void generate(
         bool hexadecimal,
         size_t samplesNumMax) {
     size_t samplesRead;
-    float buffer[SAMPLES_IN_ROW_NUM];
+    double buffer[SAMPLES_IN_ROW_NUM];
 
     while (true) {
         if (reader->getSamplesLeft())

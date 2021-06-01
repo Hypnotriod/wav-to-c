@@ -27,7 +27,7 @@ public:
             const char * fileName,
             size_t samplesNumMax);
     Status writePortion(
-            float * data,
+            double * data,
             bool swapBytes,
             bool hexadecimal,
             size_t samplesNum);

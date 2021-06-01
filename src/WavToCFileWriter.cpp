@@ -67,7 +67,7 @@ WavToCFileWriter::Status WavToCFileWriter::writeHeader(
 }
 
 WavToCFileWriter::Status WavToCFileWriter::writePortion(
-        float * data,
+        double * data,
         bool swapBytes,
         bool hexadecimal,
         size_t samplesNum) {
@@ -115,7 +115,7 @@ WavToCFileWriter::Status WavToCFileWriter::writePortion(
         if (bytesPerSample == 4)
             while (samplesNum--)
                 file << std::fixed << std::setprecision(std::numeric_limits<float>::max_digits10)
-                << *data++ << "f, ";
+                << (float) *data++ << "f, ";
     }
 
     file << std::endl;
