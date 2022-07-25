@@ -10,4 +10,5 @@ Supported 8, 16, 24 or 32 bit PCM or 32 bit IEEE FLOAT audio format
 
 -s: swap bytes (16, 24 or 32 bit PCM only)
 -h: hexadecimal format (8, 16, 24 or 32 bit PCM only)
+-z: fill remaining samples with zeros if less <max_samples_num>
 ```
