@@ -21,16 +21,28 @@ void generate(
         WavToCFileWriter * writer,
         bool swapBytes,
         bool hexadecimal,
+        bool fillRestWithZeros,
         size_t samplesNumMax) {
     size_t samplesRead;
+    size_t samplesNum;
     double buffer[SAMPLES_IN_ROW_NUM];
 
     while (true) {
+        samplesNum = samplesNumMax > SAMPLES_IN_ROW_NUM ? SAMPLES_IN_ROW_NUM : samplesNumMax;
         if (reader->getSamplesLeft())
-            reader->read(samplesNumMax > SAMPLES_IN_ROW_NUM ? SAMPLES_IN_ROW_NUM : samplesNumMax, buffer, &samplesRead);
+            reader->read(samplesNum, buffer, &samplesRead);
         writer->writePortion(buffer, swapBytes, hexadecimal, samplesRead);
-        if (!reader->getSamplesLeft() || samplesNumMax <= SAMPLES_IN_ROW_NUM) break;
         samplesNumMax -= samplesRead;
+        if (!reader->getSamplesLeft() || samplesNumMax <= 0) break;
+    }
+
+    if (!fillRestWithZeros || !samplesNumMax) return;
+
+    memset(buffer, 0, sizeof (buffer));
+    while (samplesNumMax) {
+        samplesNum = samplesNumMax > SAMPLES_IN_ROW_NUM ? SAMPLES_IN_ROW_NUM : samplesNumMax;
+        writer->writePortion(buffer, swapBytes, hexadecimal, samplesNum);
+        samplesNumMax -= samplesNum;
     }
 }
 
@@ -38,6 +50,7 @@ int process(const char * input,
         const char * output,
         bool swapBytes,
         bool hexadecimal,
+        bool fillRestWithZeros,
         size_t samplesNumMax) {
     WavFileReader reader;
     WavToCFileWriter writer;
@@ -57,7 +70,7 @@ int process(const char * input,
         return -1;
     }
     writer.writeHeader(reader.getHeader(), input, samplesNumMax);
-    generate(&reader, &writer, swapBytes, hexadecimal, samplesNumMax);
+    generate(&reader, &writer, swapBytes, hexadecimal, fillRestWithZeros, samplesNumMax);
     writer.writeEOF();
 
     return 0;
@@ -67,11 +80,13 @@ int main(int argc, char** argv) {
     size_t samplesNumMax = SIZE_MAX;
     bool swapBytes = false;
     bool hexadecimal = false;
+    bool fillRestWithZeros = false;
 
     if (argc > 1 && argv[1][0] == '-') {
         std::string config(argv[1]);
         swapBytes = config.find('s') != std::string::npos;
         hexadecimal = config.find('h') != std::string::npos;
+        fillRestWithZeros = config.find('z') != std::string::npos;
 
         argc--;
         argv = &argv[1];
@@ -83,6 +98,7 @@ int main(int argc, char** argv) {
         cout << "Options:" << endl;
         cout << "    -s: swap bytes (16, 24 or 32 bit PCM only)" << endl;
         cout << "    -h: hexadecimal format (8, 16, 24 or 32 bit PCM only)" << endl;
+        cout << "    -z: fill remaining samples with zeros if less <max_samples_num>" << endl;
         return 0;
     }
 
@@ -98,6 +114,6 @@ int main(int argc, char** argv) {
         }
     }
 
-    return process(argv[1], argv[2], swapBytes, hexadecimal, samplesNumMax);
+    return process(argv[1], argv[2], swapBytes, hexadecimal, fillRestWithZeros, samplesNumMax);
 }
 
